@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personalshopper/constants.dart';
+import 'package:personalshopper/screens/sign_up/sign_up_screen.dart';
 import 'package:personalshopper/size_config.dart';
 
 class NoAccount extends StatelessWidget {
@@ -17,7 +18,7 @@ class NoAccount extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          // onTap: () {},
+          onTap: () => Navigator.pushNamed(context, SignUpScreen.routeName),
           child: Text(
             "Sign Up",
             style: TextStyle(

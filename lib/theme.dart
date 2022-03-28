@@ -4,7 +4,23 @@ import 'package:personalshopper/constants.dart';
 ThemeData theme() {
   return ThemeData(
     scaffoldBackgroundColor: Colors.white,
+    appBarTheme: appBarTheme(),
     inputDecorationTheme: inputDecorationTheme(),
+  );
+}
+
+AppBarTheme appBarTheme() {
+  return AppBarTheme(
+    centerTitle: true,
+    color: Colors.white,
+    elevation: 0,
+    iconTheme: IconThemeData(color: Colors.black),
+    toolbarTextStyle: const TextTheme(
+      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
+    ).bodyText2,
+    titleTextStyle: const TextTheme(
+      headline6: TextStyle(color: Color(0XFF8B8B8B), fontSize: 18),
+    ).headline6,
   );
 }
 
