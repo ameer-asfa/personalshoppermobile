@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:personalshopper/components/default_button.dart';
 import 'package:personalshopper/components/form_error.dart';
 import 'package:personalshopper/helper/keyboard.dart';
+import 'package:personalshopper/screens/homepage/home_screen.dart';
 import 'package:personalshopper/size_config.dart';
 
 import '../../../constants.dart';
@@ -49,12 +50,11 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Log In as Customer",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                KeyboardUtil.hideKeyboard(context);
-              }
-            },
+            press: () => Navigator.pushNamed(context, HomeScreen.routeName),
+            // if (_formKey.currentState!.validate()) {
+            //   _formKey.currentState!.save();
+            //   KeyboardUtil.hideKeyboard(context);
+            // }
           ),
           SizedBox(height: getProportionateScreenHeight(30)),
           DefaultButton(
