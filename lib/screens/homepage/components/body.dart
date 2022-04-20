@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personalshopper/components/product_card.dart';
 import 'package:personalshopper/constants.dart';
+import 'package:personalshopper/models/Products.dart';
 import 'package:personalshopper/screens/homepage/components/carousel_slider.dart';
 import 'package:personalshopper/size_config.dart';
 
@@ -18,9 +20,28 @@ class Body extends StatelessWidget {
             SizedBox(height: getProportionateScreenHeight(20)),
             carouselSlider(imgList: imgList),
             SizedBox(height: getProportionateScreenHeight(20)),
-            sectionTitle(
-              text: "Featured Product",
-              press: () {},
+            Column(
+              children: [
+                sectionTitle(
+                  text: "Featured Product",
+                  press: () {},
+                ),
+                SizedBox(height: getProportionateScreenWidth(20)),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...List.generate(
+                        demoProduct.length,
+                        (index) => ProductCard(
+                          product: demoProduct[index],
+                        ),
+                      ),
+                      SizedBox(width: getProportionateScreenWidth(20)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

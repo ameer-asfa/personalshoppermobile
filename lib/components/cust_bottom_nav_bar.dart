@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personalshopper/screens/homepage/home_screen.dart';
+import 'package:personalshopper/screens/order/order_screen.dart';
 import '../constants.dart';
 import '../enums.dart';
 
@@ -61,9 +62,10 @@ class CustomerNavBar extends StatelessWidget {
                         ? kPrimaryColor
                         : inActiveIconColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () =>
+                      Navigator.pushNamed(context, OrderScreen.routeName),
                 ),
-                const Text('Cart'),
+                const Text('Order'),
               ],
             ),
             Column(

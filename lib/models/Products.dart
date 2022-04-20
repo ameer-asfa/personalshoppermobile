@@ -25,7 +25,7 @@ const String description =
 List<Product> demoProduct = [
   Product(
       id: 1,
-      title: 'PS4 Controller',
+      title: 'PS4 Controller - White Edition',
       num_sold: 10,
       description: description,
       category: 'Entertainment',

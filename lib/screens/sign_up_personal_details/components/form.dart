@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:personalshopper/components/default_button.dart';
 import 'package:personalshopper/components/form_error.dart';
-import 'package:personalshopper/screens/sign_up_personal_details/sign_up_personal_screen.dart';
+import 'package:personalshopper/screens/homepage/home_screen.dart';
+import 'package:personalshopper/screens/sign_up_personal_details/components/dropdown_button.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -15,10 +16,10 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  String? username;
-  String? email;
-  String? password;
-  String? confirmPassword;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  String? address;
   final List<String?> errors = [];
 
   void addError(String? error) {
@@ -42,29 +43,29 @@ class _SignUpFormState extends State<SignUpForm> {
     return SafeArea(
       child: Column(
         children: [
-          usernameField(),
+          firstNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          emailField(),
+          lastNameField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          passwordField(),
+          phoneField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          confirmPasswordField(),
+          addressField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          FormError(errors: errors),
+          const StateDropDown(),
+          SizedBox(height: getProportionateScreenHeight(30)),
           DefaultButton(
-            text: "Continue",
-            press: () =>
-                Navigator.pushNamed(context, SignUpPersonalScreen.routeName),
+            text: "Register",
+            press: () => Navigator.pushNamed(context, HomeScreen.routeName),
           ),
         ],
       ),
     );
   }
 
-  TextFormField usernameField() {
+  TextFormField firstNameField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => username = newValue,
+      onSaved: (newValue) => firstName = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(kUsernamelNullError);
@@ -78,17 +79,41 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Username",
-        hintText: "Username",
+        labelText: "First Name",
+        hintText: "First Name",
         suffixIcon: Icon(Icons.person_outline),
       ),
     );
   }
 
-  TextFormField emailField() {
+  TextFormField lastNameField() {
     return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      onSaved: (newValue) => email = newValue,
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => lastName = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(kUsernamelNullError);
+        }
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(kUsernamelNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Last Name",
+        hintText: "Last Name",
+        suffixIcon: Icon(Icons.person_outline),
+      ),
+    );
+  }
+
+  TextFormField phoneField() {
+    return TextFormField(
+      keyboardType: TextInputType.phone,
+      onSaved: (newValue) => phone = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(kEmailNullError);
@@ -108,71 +133,39 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Email",
-        hintText: "Email",
-        suffixIcon: Icon(Icons.email),
+        labelText: "Phone Number",
+        hintText: "Phone Number",
+        suffixIcon: Icon(Icons.phone_android),
       ),
     );
   }
 
-  TextFormField passwordField() {
+  TextFormField addressField() {
     return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => address = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(kShortPassError);
+          removeError(kEmailNullError);
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(kInvalidEmailError);
         }
         return null;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(kPassNullError);
+          addError(kEmailNullError);
           return "";
-        } else if (value.length < 8) {
-          addError(kShortPassError);
-          return "";
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        labelText: "Password",
-        hintText: "Password",
-        //floatingLabelBehavior: FloatingLabelBehavior.auto,
-        suffixIcon: Icon(Icons.lock),
-      ),
-    );
-  }
-
-  TextFormField confirmPasswordField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => confirmPassword = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(kShortPassError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(kShortPassError);
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(kInvalidEmailError);
           return "";
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Confirm Password",
-        hintText: "Re-enter Password",
-        //floatingLabelBehavior: FloatingLabelBehavior.auto,
-        suffixIcon: Icon(Icons.lock),
+        labelText: "Address",
+        hintText: "Address",
+        suffixIcon: Icon(Icons.home),
       ),
     );
   }
