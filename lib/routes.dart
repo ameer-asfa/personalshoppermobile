@@ -8,7 +8,7 @@ import 'package:personalshopper/screens/sign_up_personal_details/sign_up_persona
 final Map<String, WidgetBuilder> routes = {
   SignInScreen.routeName: (context) => SignInScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
-  SignUpPersonalScreen.routeName: (context) => SignUpPersonalScreen(),
+  //SignUpPersonalScreen.routeName: (context) => SignUpPersonalScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
   OrderScreen.routeName: (context) => OrderScreen(),
 };
