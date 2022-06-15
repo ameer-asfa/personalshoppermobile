@@ -1,16 +1,25 @@
-# personalshopper
+# Personal Shopper Mobile Application - Final Year Project
 
-A new Flutter project.
+This project was created as my final year project for my bachelor's degree. It is an E-Commerce mobile application made with Flutter version 2.8, Dart and NodeJS connected with MySQL. Currently, it can only run Android phones. The project has two main users, Personal Shopper and Customers. Personal shoppers are essential people who do paid services to purchace items that are usually not available online, or offer a cheaper price than retailers. This system aims to help create a standardized platform that personal shopper does not have.
 
-## Getting Started
+**Backend Code Available** [Here](https://github.com/ameer-asfa/personalshoppermobile-server)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+**Personal Shopper**
+- Can add, update or delete products
+- Update or delete personal information
+- View order history and update tracking number for each order
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+**Customer**
+- Add item to cart
+- Checkout and Make Payment (No real payment will be made as it is only a design)
+- View order history and click received order
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Photos of Interface
+
+![Preview](assets/1.jpg)
+![Preview](assets/2.jpg)
+![Preview](assets/3.jpg)
+![Preview](assets/4.jpg)
+![Preview](assets/5.jpg)
+![Preview](assets/6.jpg)
