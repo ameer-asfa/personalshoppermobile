@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:personalshopper/screens/homepage/home_screen.dart';
 import 'package:personalshopper/screens/order/order_screen.dart';
 import 'package:personalshopper/screens/profile/profile_screen.dart';
+import 'package:personalshopper/screens/store/store_screen.dart';
 import '../constants.dart';
 import '../enums.dart';
 
-class CustomerNavBar extends StatelessWidget {
-  const CustomerNavBar({
+class ShopperNavBar extends StatelessWidget {
+  const ShopperNavBar({
     Key? key,
     required this.selectedMenu,
   }) : super(key: key);
 
-  final CustomerMenuState selectedMenu;
+  final ShopperMenuState selectedMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class CustomerNavBar extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.home,
-                    color: CustomerMenuState.home == selectedMenu
+                    color: ShopperMenuState.home == selectedMenu
                         ? kPrimaryColor
                         : inActiveIconColor,
                   ),
@@ -59,7 +60,7 @@ class CustomerNavBar extends StatelessWidget {
                 IconButton(
                   icon: Icon(
                     Icons.shopping_bag_outlined,
-                    color: CustomerMenuState.order == selectedMenu
+                    color: ShopperMenuState.order == selectedMenu
                         ? kPrimaryColor
                         : inActiveIconColor,
                   ),
@@ -74,8 +75,24 @@ class CustomerNavBar extends StatelessWidget {
               children: [
                 IconButton(
                   icon: Icon(
+                    Icons.store_mall_directory_outlined,
+                    color: ShopperMenuState.store == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, StoreScreen.routeName),
+                ),
+                const Text('Store'),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(
                     Icons.person_outline,
-                    color: CustomerMenuState.profile == selectedMenu
+                    color: ShopperMenuState.profile == selectedMenu
                         ? kPrimaryColor
                         : inActiveIconColor,
                   ),

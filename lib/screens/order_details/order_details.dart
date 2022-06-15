@@ -3,19 +3,19 @@ import 'package:personalshopper/components/cust_bottom_nav_bar.dart';
 import 'package:personalshopper/components/shopper_bottom_nav_bar.dart';
 import 'package:personalshopper/constants.dart';
 import 'package:personalshopper/enums.dart';
-import 'package:personalshopper/screens/order/components/body.dart';
+import 'package:personalshopper/screens/order_details/components/body.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+class OrderDetailScreen extends StatefulWidget {
+  const OrderDetailScreen({Key? key}) : super(key: key);
 
-  static String routeName = '/order';
+  static String routeName = '/order_details';
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<OrderDetailScreen> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _OrderScreenState extends State<OrderDetailScreen> {
   String? userRole;
 
   getUserRoleSF() async {
@@ -36,7 +36,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Orders',
+          'Order Details',
           style: TextStyle(
             color: kPrimaryColor,
             fontWeight: FontWeight.bold,

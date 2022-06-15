@@ -1,52 +1,96 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:personalshopper/components/product_card.dart';
 import 'package:personalshopper/constants.dart';
 import 'package:personalshopper/models/Products.dart';
 import 'package:personalshopper/screens/homepage/components/carousel_slider.dart';
+import 'package:personalshopper/screens/product_details/product_details_screen.dart';
 import 'package:personalshopper/size_config.dart';
+import 'package:personalshopper/apiConstant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'search_field.dart';
+import 'package:http/http.dart' as http;
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
 
   @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late List<Product> productModel;
+  bool isLoading = true;
+
+  Future getProduct() async {
+    final responseProduct = await http.get(
+        Uri.parse('${apiConstant.restApiUrl}/product/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        });
+
+    productModel = List<Product>.from(json
+        .decode(responseProduct.body)
+        .map((model) => Product.fromJson(model)));
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getProduct();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            searchField(),
-            SizedBox(height: getProportionateScreenHeight(20)),
-            carouselSlider(imgList: imgList),
-            SizedBox(height: getProportionateScreenHeight(20)),
-            Column(
-              children: [
-                sectionTitle(
-                  text: "Featured Product",
-                  press: () {},
-                ),
-                SizedBox(height: getProportionateScreenWidth(20)),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+    return isLoading == true
+        ? Center(child: CircularProgressIndicator())
+        : SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  searchField(),
+                  SizedBox(height: getProportionateScreenHeight(20)),
+                  carouselSlider(imgList: imgList),
+                  SizedBox(height: getProportionateScreenHeight(20)),
+                  Column(
                     children: [
-                      ...List.generate(
-                        demoProduct.length,
-                        (index) => ProductCard(
-                          product: demoProduct[index],
+                      sectionTitle(
+                        text: "Featured Product",
+                        press: () {},
+                      ),
+                      SizedBox(height: getProportionateScreenWidth(20)),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ...List.generate(
+                              productModel.length,
+                              (index) => ProductCard(
+                                  product: productModel[index],
+                                  press: () async {
+                                    var prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString(
+                                        'product_id', productModel[index].id!);
+                                    Navigator.pushNamed(context,
+                                        ProductDetailsScreen.routeName);
+                                  }),
+                            ),
+                            SizedBox(width: getProportionateScreenWidth(20)),
+                          ],
                         ),
                       ),
-                      SizedBox(width: getProportionateScreenWidth(20)),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   final List<String> imgList = [

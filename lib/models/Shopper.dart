@@ -1,4 +1,4 @@
-class Customer {
+class Shopper {
   String? id;
   String? email;
   String? password;
@@ -11,7 +11,7 @@ class Customer {
   String? updatedAt;
   String? createdAt;
 
-  Customer(
+  Shopper(
       {this.id,
       this.email,
       this.password,
@@ -24,18 +24,32 @@ class Customer {
       this.updatedAt,
       this.createdAt});
 
-  Customer.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    email = json['email'];
-    password = json['password'];
-    username = json['username'];
-    name = json['name'];
-    address = json['address'];
-    phone = json['phone'];
-    state = json['state'];
-    role = json['role'];
-    updatedAt = json['updatedAt'];
-    createdAt = json['createdAt'];
+  Shopper.fromJson(Map<String, dynamic> json) {
+    if (json['id'] != null) {
+      id = json['id'];
+      email = json['email'];
+      password = json['password'];
+      username = json['username'];
+      name = json['name'];
+      address = json['address'];
+      phone = json['phone'];
+      state = json['state'];
+      role = json['role'];
+      updatedAt = json['updatedAt'];
+      createdAt = json['createdAt'];
+    } else {
+      id = "";
+      email = "";
+      password = "";
+      username = "";
+      name = "";
+      address = "";
+      phone = "";
+      state = "";
+      role = "";
+      updatedAt = "";
+      createdAt = "";
+    }
   }
 
   Map<String, dynamic> toJson() {

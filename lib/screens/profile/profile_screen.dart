@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:personalshopper/components/cust_bottom_nav_bar.dart';
 import 'package:personalshopper/components/shopper_bottom_nav_bar.dart';
-import 'package:personalshopper/constants.dart';
 import 'package:personalshopper/enums.dart';
-import 'package:personalshopper/screens/order/components/body.dart';
+import 'package:personalshopper/screens/profile/components/body.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
-
-  static String routeName = '/order';
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+  static String routeName = "/profile";
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   String? userRole;
 
   getUserRoleSF() async {
@@ -35,18 +33,12 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Orders',
-          style: TextStyle(
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: Text("Profile"),
       ),
       body: Body(),
       bottomNavigationBar: (userRole == 'Customer')
-          ? const CustomerNavBar(selectedMenu: CustomerMenuState.order)
-          : const ShopperNavBar(selectedMenu: ShopperMenuState.order),
+          ? const CustomerNavBar(selectedMenu: CustomerMenuState.profile)
+          : const ShopperNavBar(selectedMenu: ShopperMenuState.profile),
     );
   }
 }

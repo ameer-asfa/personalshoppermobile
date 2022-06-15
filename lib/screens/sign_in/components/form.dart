@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
+import 'package:personalshopper/apiConstant.dart';
 import 'package:personalshopper/components/default_button.dart';
 import 'package:personalshopper/components/form_error.dart';
 import 'package:personalshopper/helper/keyboard.dart';
@@ -55,8 +58,9 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
               text: "Log In as Customer",
               press: () async {
-                if (_formKey.currentState!.validate())
-                  _loginValidator(email, password);
+                if (_formKey.currentState!.validate()) {
+                  _loginValidator(email, password, 'Customer');
+                }
               }
               // Navigator.pushNamed(context, HomeScreen.routeName),
               // if (_formKey.currentState!.validate()) {
@@ -70,7 +74,7 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                KeyboardUtil.hideKeyboard(context);
+                _loginValidator(email, password, 'Personal Shopper');
               }
             },
           ),
@@ -116,6 +120,10 @@ class _SignFormState extends State<SignForm> {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.red),
         ),
       ),
     );
@@ -173,36 +181,79 @@ class _SignFormState extends State<SignForm> {
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(color: Colors.red),
         ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
       ),
     );
   }
 
   // Login Function
-  Future<bool> _login(email, password) async {
-    var headers = {'Content-Type': 'application/json'};
-    var request =
-        http.Request('POST', Uri.parse('http://192.168.1.34:3000/login/'));
-    request.body = json.encode({"email": email, "password": password});
-    request.headers.addAll(headers);
+  Future<bool> _login(email, password, role) async {
+    final response = await http
+        .post(Uri.parse('${apiConstant.restApiUrl}/login/'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: jsonEncode(<String, String>{
+              'email': email,
+              'password': password,
+              'role': role
+            }))
+        .timeout(const Duration(seconds: 3));
 
-    http.StreamedResponse response = await request.send();
+    print(response);
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      final prefs = await SharedPreferences.getInstance();
+      var parse = json.decode(response.body);
+      prefs.setString('id', parse["id"]);
+      prefs.setString('user_role', parse["role"]);
+      String? userRole = prefs.getString('user_role');
       return true;
     } else {
-      print(response.reasonPhrase);
+      // showDialog(
+      //   context: context,
+      //   builder: (ctx) => AlertDialog(
+      //     title: const Text("Invalid Email, Password or Role"),
+      //     content:
+      //         const Text("You have entered an invalid email, password or role"),
+      //     actions: [
+      //       ElevatedButton(
+      //         onPressed: () => Navigator.of(context).pop(),
+      //         child: const Text("Okay"),
+      //       ),
+      //     ],
+      //   ),
+      // );
       return false;
     }
+    return false;
   }
 
-  void _loginValidator(email, password) async {
-    var result = await _login(email, password);
+  void _loginValidator(email, password, role) async {
+    var result = await _login(email, password, role);
+
     if (result == true) {
       Navigator.pushNamedAndRemoveUntil(
           context, HomeScreen.routeName, (_) => false);
     } else {
-      print("Pundek");
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text("Invalid Email, Password or Role"),
+          content: const Text(
+              "You have entered an invalid email or email or picked the wrong role"),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Okay"),
+            ),
+          ],
+        ),
+      );
     }
   }
 }
