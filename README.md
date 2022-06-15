@@ -17,9 +17,9 @@ This project was created as my final year project for my bachelor's degree. It i
 
 ## Photos of Interface
 
-![Preview](assets/1.jpg)
-![Preview](assets/2.jpg)
-![Preview](assets/3.jpg)
-![Preview](assets/4.jpg)
-![Preview](assets/5.jpg)
-![Preview](assets/6.jpg)
+![Preview](assets/1.png)
+![Preview](assets/2.png)
+![Preview](assets/3.png)
+![Preview](assets/4.png)
+![Preview](assets/5.png)
+![Preview](assets/6.png)
