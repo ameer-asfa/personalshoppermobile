@@ -37,14 +37,16 @@ class _BodyState extends State<Body> {
     print(total);
 
     DateTime now = DateTime.now();
-    DateTime order_date = DateTime(now.day, now.month, now.year);
+    // DateTime order_date = DateTime(now.year, now.month, now.day);
+
+    // print(order_date);
 
     var headers = {'Content-Type': 'application/json'};
     var request =
         http.Request('POST', Uri.parse('http://192.168.0.119:3000/order/'));
     request.body = json.encode({
       "cartId": cartId,
-      "order_date": order_date.toString(),
+      "order_date": now.toString(),
       "status": 'Paid',
       "total": total
     });

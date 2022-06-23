@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
                           child: DefaultButton(
                             text: "Add To Cart",
                             press: () {
-                              _addToCart();
+                              _checkForShopper();
                             },
                           ),
                         ),
@@ -96,6 +96,55 @@ class _BodyState extends State<Body> {
                       widget.product.image!)),
         ),
       );
+    }
+  }
+
+  // This is to ensure customer can only add item from one shopper at a time
+  _checkForShopper() async {
+    String? shopperId;
+    var prefs = await SharedPreferences.getInstance();
+    var productId = prefs.getString('product_id');
+    var customerId = prefs.getString('id');
+
+    final responseShopper = await http.get(
+        Uri.parse('${apiConstant.restApiUrl}/product/' + productId!),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        }).timeout(const Duration(seconds: 3));
+
+    final responseCart = await http.get(
+        Uri.parse('${apiConstant.restApiUrl}/cart/' + customerId!),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        }).timeout(const Duration(seconds: 3));
+
+    var parseShopper = json.decode(responseShopper.body);
+    var parseCart = json.decode(responseCart.body);
+    print(parseShopper[0]['shopper_id']);
+
+    shopperId = parseShopper[0]['shopper_id'];
+
+    if (parseCart != null) {
+      if (parseCart[0]['shopper_id'] == parseShopper['shopper_id']) {
+        _addToCart();
+      } else {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text("Add to Cart Error"),
+            content: const Text(
+                "You can only add products from one shopper at a time"),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Okay"),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      _addToCart();
     }
   }
 

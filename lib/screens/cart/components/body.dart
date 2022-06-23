@@ -41,7 +41,6 @@ class _BodyState extends State<Body> {
         });
 
     var prefs = await SharedPreferences.getInstance();
-    print(responseId.body);
     prefs.setString('cart_id', responseId.body);
 
     var parse = await json.decode(response.body);
@@ -78,7 +77,20 @@ class _BodyState extends State<Body> {
                       child: Dismissible(
                         key: Key(cartModel[index].id.toString()),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (direction) {
+                        onDismissed: (direction) async {
+                          var prefs = await SharedPreferences.getInstance();
+                          var cartId = prefs.getString('cart_id');
+                          final response = await http.delete(
+                              Uri.parse(
+                                  '${apiConstant.restApiUrl}/cart/delete/' +
+                                      cartId! +
+                                      '/' +
+                                      cartModel[index].id.toString()),
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/json; charset=UTF-8'
+                              });
+
                           setState(() {
                             cartModel.removeAt(index);
                           });

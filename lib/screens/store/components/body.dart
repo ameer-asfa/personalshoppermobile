@@ -123,22 +123,24 @@ class _BodyState extends State<Body> {
                 color: Colors.grey,
                 thickness: 1,
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 20),
-                  child: GridView.builder(
-                    itemCount: productModel.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      mainAxisSpacing: 10,
+              productModel.length < 1
+                  ? SizedBox()
+                  : Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20, top: 20),
+                        child: GridView.builder(
+                          itemCount: productModel.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.75,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemBuilder: (context, index) => ProductCard(
+                              product: productModel[index], press: () {}),
+                        ),
+                      ),
                     ),
-                    itemBuilder: (context, index) =>
-                        ProductCard(product: productModel[index], press: () {}),
-                  ),
-                ),
-              ),
             ],
           );
   }
