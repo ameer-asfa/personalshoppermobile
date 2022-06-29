@@ -153,6 +153,7 @@ class _BodyState extends State<Body> {
                         billingValue('Tracking Number',
                             orderModel.tracking_number ?? 'Not Shipped'),
                         const SizedBox(height: 10),
+                        billingValue('Address', customerAddress),
                         // billingValue('Address', customerAddress),
                       ],
                     ),

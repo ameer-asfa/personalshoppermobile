@@ -113,19 +113,18 @@ class _BodyState extends State<Body> {
         }).timeout(const Duration(seconds: 3));
 
     final responseCart = await http.get(
-        Uri.parse('${apiConstant.restApiUrl}/cart/' + customerId!),
+        Uri.parse('${apiConstant.restApiUrl}/cart/get/' + customerId!),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8'
         }).timeout(const Duration(seconds: 3));
 
     var parseShopper = json.decode(responseShopper.body);
     var parseCart = json.decode(responseCart.body);
-    print(parseShopper[0]['shopper_id']);
 
     shopperId = parseShopper[0]['shopper_id'];
 
-    if (parseCart != null) {
-      if (parseCart[0]['shopper_id'] == parseShopper['shopper_id']) {
+    if (parseCart.length > 0) {
+      if (parseCart[0]['shopper_id'] == parseShopper[0]['shopper_id']) {
         _addToCart();
       } else {
         showDialog(

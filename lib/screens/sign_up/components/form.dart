@@ -220,7 +220,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
       },
       onChanged: (value) {
-        //Do something when changing the item if you want.
+        role = value.toString();
       },
       onSaved: (value) {
         role = value.toString();
@@ -441,7 +441,7 @@ class _SignUpFormState extends State<SignUpForm> {
       "address": address,
       "phone": phone,
       "state": selectedState,
-      "role": "Customer"
+      "role": role
     });
     request.headers.addAll(headers);
 

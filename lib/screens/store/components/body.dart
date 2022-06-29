@@ -6,6 +6,7 @@ import 'package:personalshopper/constants.dart';
 import 'package:personalshopper/apiConstant.dart';
 import 'package:personalshopper/models/Products.dart';
 import 'package:personalshopper/models/Shopper.dart';
+import 'package:personalshopper/screens/product_details/product_details_screen.dart';
 import 'package:personalshopper/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +28,15 @@ class _BodyState extends State<Body> {
 
   Future<String> getShopperId() async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('id') ?? '';
+    var userRole = prefs.getString('user_role');
+    var id;
+    if (userRole == 'Customer') {
+      id = prefs.getString('shopper_id');
+    } else {
+      id = prefs.getString('id');
+    }
+
+    return id ?? '';
   }
 
   Future getInfo(id) async {
@@ -90,7 +99,8 @@ class _BodyState extends State<Body> {
                         height: 110,
                         width: 110,
                         child: const CircleAvatar(
-                          backgroundImage: AssetImage('assets/images/Man.png'),
+                          backgroundImage:
+                              AssetImage('assets/images/no_image_icon.jpg'),
                         ),
                       ),
                     ),
@@ -137,7 +147,15 @@ class _BodyState extends State<Body> {
                             mainAxisSpacing: 10,
                           ),
                           itemBuilder: (context, index) => ProductCard(
-                              product: productModel[index], press: () {}),
+                              product: productModel[index],
+                              press: () async {
+                                var prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString(
+                                    'product_id', productModel[index].id!);
+                                Navigator.pushNamed(
+                                    context, ProductDetailsScreen.routeName);
+                              }),
                         ),
                       ),
                     ),

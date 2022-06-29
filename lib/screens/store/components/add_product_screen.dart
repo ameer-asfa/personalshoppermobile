@@ -244,7 +244,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         }
       },
       onChanged: (value) {
-        //Do something when changing the item if you want.
+        category = value.toString();
       },
       onSaved: (value) {
         category = value.toString();
@@ -285,7 +285,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       {
         "name": name,
         "description": description,
-        "category": "technology",
+        "category": category,
         "price": price,
         "shopper_id": shopperId,
         "image": await MultipartFile.fromFile(imageFile!.path),

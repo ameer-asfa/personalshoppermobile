@@ -8,9 +8,12 @@ import 'package:personalshopper/screens/homepage/components/carousel_slider.dart
 import 'package:personalshopper/screens/product_details/product_details_screen.dart';
 import 'package:personalshopper/size_config.dart';
 import 'package:personalshopper/apiConstant.dart';
+import 'package:personalshopper/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'search_field.dart';
+import 'package:search_page/search_page.dart';
+
 import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
@@ -53,7 +56,7 @@ class _BodyState extends State<Body> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  searchField(),
+                  searchField(context),
                   SizedBox(height: getProportionateScreenHeight(20)),
                   carouselSlider(imgList: imgList),
                   SizedBox(height: getProportionateScreenHeight(20)),
@@ -91,6 +94,76 @@ class _BodyState extends State<Body> {
               ),
             ),
           );
+  }
+
+  Padding searchField(BuildContext context) {
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: Row(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth * 0.89,
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: TextField(
+              onTap: () {
+                showSearch(
+                  context: context,
+                  delegate: SearchPage<Product>(
+                    barTheme: ThemeData.light(),
+                    onQueryUpdate: (value) => print(value),
+                    items: productModel,
+                    searchLabel: 'Search',
+                    suggestion: const Center(
+                      child: Text('Search for product by product name'),
+                    ),
+                    failure: const Center(
+                      child: Text('No product found :('),
+                    ),
+                    filter: (productModel) => [
+                      productModel.name,
+                    ],
+                    builder: (productModel) => ListTile(
+                      onTap: () async {
+                        var prefs = await SharedPreferences.getInstance();
+                        prefs.setString('product_id', productModel.id!);
+                        Navigator.pushNamed(
+                            context, ProductDetailsScreen.routeName);
+                      },
+                      leading: productModel.image == null
+                          ? Image.asset('assets/images/no_image_icon.jpg')
+                          : Image.network(
+                              "${apiConstant.restApiUrl}/uploads/product_image/" +
+                                  productModel.image!,
+                              width: 100,
+                              height: 100,
+                            ),
+                      title: Text(productModel.name!),
+                      subtitle: Text(
+                          'RM${productModel.price!.toStringAsFixed(2)}',
+                          style: const TextStyle(color: kPrimaryColor)),
+                    ),
+                  ),
+                );
+              },
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(10),
+                    vertical: getProportionateScreenHeight(20)),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                hintText: "Search Product Name",
+                suffixIcon: const Icon(Icons.search),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   final List<String> imgList = [

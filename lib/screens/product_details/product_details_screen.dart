@@ -60,6 +60,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             //   preferredSize: Size.fromHeight(AppBar().preferredSize.height),
             //   // child: CustomAppBar(rating: agrs.product.rating!),
             // ),
+            appBar: AppBar(),
             body: Body(product: productModel),
           );
   }

@@ -32,10 +32,12 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   String? userRole;
   String _selectedMenu = '';
+  String? shopperId;
 
-  _getUserRole() async {
+  _getUserRoleAndId() async {
     var prefs = await SharedPreferences.getInstance();
     userRole = prefs.getString('user_role');
+    shopperId = prefs.getString('id');
     setState(() {
       userRole = userRole;
     });
@@ -43,7 +45,7 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   void initState() {
-    _getUserRole();
+    _getUserRoleAndId();
     super.initState();
   }
 
@@ -91,7 +93,8 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   ),
                   //
-                  userRole != 'Customer'
+                  userRole != 'Customer' &&
+                          widget.product.shopperId == shopperId
                       ? PopupMenuButton(
                           // Callback that sets the selected popup menu item.
                           onSelected: (Menu item) async {

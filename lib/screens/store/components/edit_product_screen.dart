@@ -264,7 +264,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         }
       },
       onChanged: (value) {
-        //Do something when changing the item if you want.
+        category = value.toString();
       },
       onSaved: (value) {
         category = value.toString();
